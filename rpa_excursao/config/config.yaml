@@ -1,0 +1,82 @@
+rpa:
+  name: "RPA - Distribuição de Ônibus - Excursão"
+  version: "1.0.0"
+  author: "Automação RPA"
+
+onibus:
+  capacidade_maxima: 48
+  prefixo_nome: "Ônibus"
+
+colunas_entrada:
+  carimbo: "Carimbo de data/hora"
+  email: "Endereço de e-mail"
+  nome: "NOME COMPLETO (sem abreviações e sem apelido) "
+  cpf: "CPF"
+  ponto_embarque: "PONTO DE EMBARQUE"
+  whatsapp: "Contato WhatsApp (com DDD)"
+  emergencia: "Contato de emergência (parente de primeiro grau, pai ou mãe)  exemplo: DDD+Número+Nome   81.99757-5121 Maria/Mãe  "
+  aceite: "Estou ciente e concordo com os termos e condições acima e que todos os dados informados por mim aqui são verdadeiros.   "
+  amigos: "Email dos amigos com quem vai viajar"
+
+colunas_saida:
+  - "Ônibus"
+  - "Nome Completo"
+  - "CPF"
+  - "Ponto de Embarque"
+  - "Email"
+  - "WhatsApp"
+  - "Grupo de Afinidade"
+
+logs:
+  nivel: "INFO"
+  arquivo: "logs/rpa_excursao.log"
+  formato: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+
+retries:
+  max_tentativas: 3
+  delay_segundos: 2
+
+# ─────────────────────────────────────────────────────────────
+# REGRAS DE ROTA
+# Cada "tipo" de ônibus define:
+#   - pontos_prioritarios : pontos que devem LOTAR esse ônibus primeiro
+#   - pontos_permitidos   : pontos que podem completar vagas restantes
+#   - onibus_unico        : se true, TODOS desse ponto vão em 1 único ônibus
+#   - prioridade          : ordem de alocação (menor = primeiro)
+# ─────────────────────────────────────────────────────────────
+rotas:
+  jaboatao:
+    label: "Jaboatão"
+    pontos_prioritarios:
+      - "Jaboatao Velho"
+    pontos_permitidos:
+      - "Jaboatao Velho"
+      - "Derby"
+      - "Pe-15"
+      - "Pelópidas"
+      - "Igarassu"
+    onibus_unico: true          # todos de Jaboatão num único ônibus
+    prioridade: 1
+
+  piedade:
+    label: "Piedade"
+    pontos_prioritarios:
+      - "Piedade"
+    pontos_permitidos:
+      - "Piedade"
+      - "Boa Viagem"
+      - "Derby"
+    onibus_unico: false
+    prioridade: 2
+
+  derby:
+    label: "Derby"
+    pontos_prioritarios:
+      - "Derby"
+    pontos_permitidos:
+      - "Derby"
+      - "Pe-15"
+      - "Pelópidas"
+      - "Igarassu"
+    onibus_unico: false
+    prioridade: 3
